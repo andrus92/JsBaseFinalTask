@@ -1,0 +1,116 @@
+<html>
+
+<head>
+    <title>finalTask</title>
+
+    <script type="text/javascript">
+        // 1. Принять от пользователя имена людей для набора в команду.
+        //    Имена принять и сохранить в новом массиве. Количество имён должно соответсвовать количеству должностей.
+        //    Массив с должностями - ['Junior developer', 'Middle developer', 'Senior developer',
+        //    'Junior QA', 'Middle QA', 'Senior QA', 'Project manager'].
+
+        function getNames(positionsArr) {
+            var namesArr = new Array(positionsArr.length);
+
+            for (var i = 0; i < positionsArr.length; i++) {
+                var name = prompt(`Enter the name of the employee ${positionsArr[i]}`);
+                namesArr[i] = name;
+            }
+
+            return namesArr;
+        }
+
+        // 2. Создать объект team в котором будут храниться новые объекты-сотрудники
+        //    с параметрами name и position, данные для этих свойств добавляем из массивов.
+
+        function createTeam(namesArr, positionsArr) {
+            var team = new Array();
+
+            for (var i = 0; i < positionsArr.length; i++) {
+                var teamMember = {
+                    name: namesArr[i],
+                    position: positionsArr[i]
+                }
+                team.push(teamMember);
+            }
+            return team;
+        }
+
+        // 3. Добавить сотрудникам зарплаты (свойство salary) при помощи метода Math.random(),
+        //    который будет выдавать произвольное число в промежутке между N1 и N2 исходя из принципа:
+        //    если в должности есть слово "junior" сумма будет от 500 до 1000;
+        //    если в должности есть слово "middle" сумма будет от 1500 до 2000;
+        //    если в должности есть слово "senior" сумма будет от 2500 до 3000;
+        //    для всех остальных - от 4000 до 4500;
+        //    Для определения того есть ли слово в имени должности используйте метод str.indexOf('часть строки для поиска')
+
+        function setSalary(team) {
+            team.forEach(element => {
+                // Returns a random integer from 0 to 500:
+                var randNum = Math.floor(Math.random() * 501);
+                var salary;
+                if (element.position.indexOf('Junior') !== -1) {
+                    salary = 500 + randNum;
+                } else if (element.position.indexOf('Middle') !== -1) {
+                    salary = 1500 + randNum;
+                } else if (element.position.indexOf('Senior') !== -1) {
+                    salary = 2500 + randNum;
+                } else {
+                    salary = 4000 + randNum;
+                }
+                element.salary = salary;
+            });
+        }
+
+
+        // 4. Добавить каждому сотруднику метод tellAboutYourSelf(), который будет сообщать информацию о
+        //    пользователе (например "Меня зовут John и я - Project manager. Я зарабатываю 4863$.").
+
+        function addTellAboutYourSelfMethod(team) {
+            team.forEach(element => {
+                element.tellAboutYourSelf = function () {
+                    console.log(`${this.name} - ${this.position}. Salary - ${this.salary}\$.`);
+                }
+            });
+        }
+
+        // 5. Добавить объекту team метод showTeam(), который будет выводить информацию о всех сотрудниках в консоль в формате:
+        // "John - Project manager. Зарплата - 4863$."*
+        function addShowTeamMethod(team) { 
+            team.showTeam = function () {
+                this.forEach(element => {
+                    //console.log(`${element.name} - ${element.position}. Salary - ${element.salary}\$.`);
+                    element.tellAboutYourSelf();
+                });
+            }
+        }
+
+
+        // ВЫЗОВ ВСЕХ ФУНКЦИЙ
+        const positionsArr = [
+            'Junior developer',
+            'Middle developer',
+            'Senior developer',
+            'Junior QA',
+            'Middle QA',
+            'Senior QA',
+            'Project manager'];
+        var namesArr = getNames(positionsArr);
+        var team = createTeam(namesArr, positionsArr);
+        setSalary(team);
+        addTellAboutYourSelfMethod(team);
+        addShowTeamMethod(team);
+        console.log('Calling team.showTeam() method:');
+        team.showTeam();
+
+
+    </script>
+
+</head>
+
+<body>
+
+
+</body>
+
+</html>
